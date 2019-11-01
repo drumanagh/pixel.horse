@@ -1,2 +1,3 @@
 process.env.NODE_ENV = 'production';
-require('./src/scripts/server/server');
+require('ts-node').register();
+require('./src/server/server');

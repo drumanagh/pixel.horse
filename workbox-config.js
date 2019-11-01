@@ -1,4 +1,4 @@
-const { hash } = require('./src/ts/generated/hash.json');
+const { hash } = require('./src/generated/hash.json');
 const ignore = /^\/((a(pi(\d?|-tools)|uth|dm(in)?)|(bl|m)ep)|tools|reload)\/|\.html|^\/sw\.js$/;
 
 module.exports = {

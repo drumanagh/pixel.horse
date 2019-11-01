@@ -1,11 +1,12 @@
-require('./src/scripts/server/boot');
+require('ts-node').register();
+require('./src/server/boot');
 const mongoose = require('mongoose');
 const fs = require('fs');
 const _ = require('lodash');
-const { decompressPony } = require('./src/scripts/common/compressPony');
-const ponyInfo = require('./src/scripts/common/ponyInfo');
-const db = require('./src/scripts/server/db');
-const config = require('./src/scripts/server/config').config;
+const { decompressPony } = require('./src/common/compressPony');
+const ponyInfo = require('./src/common/ponyInfo');
+const db = require('./src/server/db');
+const config = require('./src/server/config').config;
 const argv = require('yargs').option('addrole', { type: 'array' }).option('removerole', { type: 'array' }).argv;
 
 mongoose.connect(config.db, {

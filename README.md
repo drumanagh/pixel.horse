@@ -138,7 +138,7 @@ Get OAuth keys for authentication platform of your choice (github, google, twitt
 
 ### Other
 
-If you want to add other sign-in methods you need to find appropriate [passport](http://www.passportjs.org/) package and add it in `src/ts/server/oauth.ts` and add correct entry in `config.json`.
+If you want to add other sign-in methods you need to find appropriate [passport](http://www.passportjs.org/) package and add it in `src/server/oauth.ts` and add correct entry in `config.json`.
 
 ## Configuration
 
@@ -278,7 +278,7 @@ gulp test           # terminal 4 (optional)
 ```
 
 ```bash
-gulp dev --sprites  # run with generation of sprite sheets (use src/ts/tools/trigger.txt to trigger sprite generation without restarting gulp)
+gulp dev --sprites  # run with generation of sprite sheets (use src/tools/trigger.txt to trigger sprite generation without restarting gulp)
 gulp dev --test     # run with tests
 gulp dev --coverage # run with tests and code coverage
 ```
@@ -309,27 +309,27 @@ Tools are accessible at `<base_url>/tools/` (only available in dev mode or when 
 - `public/images` - additional logos
 - `public` - privacy policy and terms of service
 - `favicons` - icons
-- `src/ts/common/constants.ts` - global settings
-- `src/ts/server/maps/*` - maps configuration and setup
-- `src/ts/server/start.ts` - world setup
-- `src/ts/components/services/audio.ts` - adding/removing sound tracks
-- `src/ts/client/credits` - credits and contributors
+- `src/common/constants.ts` - global settings
+- `src/server/maps/*` - maps configuration and setup
+- `src/server/start.ts` - world setup
+- `src/components/services/audio.ts` - adding/removing sound tracks
+- `src/client/credits` - credits and contributors
 - `src/style/partials/_variables.scss` - page style configuration
 
 ### Custom map introduction
 
-- `src/ts/common/entities.ts` - adding entities
-- `src/ts/server/start.ts:35` - adding custom map to the world
-- `src/ts/server/map/customMap.ts` - commented introduction to customizing maps
+- `src/common/entities.ts` - adding entities
+- `src/server/start.ts:35` - adding custom map to the world
+- `src/server/map/customMap.ts` - commented introduction to customizing maps
 
 ## Repo quirks and notes
 
 ### `sprites.ts`
 
-Due to an issue with the build system, an old copy of `src/ts/generated/sprites.ts` is shipped with this repository. In order to prevent Git from seeing changes to this file from local builds and warning you about them when changing branches or pulling new changes, you can use the following command:
+Due to an issue with the build system, an old copy of `src/generated/sprites.ts` is shipped with this repository. In order to prevent Git from seeing changes to this file from local builds and warning you about them when changing branches or pulling new changes, you can use the following command:
 
 ```bash
-git update-index --assume-unchanged src/ts/generated/sprites.ts
+git update-index --assume-unchanged src/generated/sprites.ts
 ```
 
 Read more about it [here](https://stackoverflow.com/questions/1139762/ignore-files-that-have-already-been-committed-to-a-git-repository).

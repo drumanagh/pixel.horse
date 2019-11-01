@@ -1,3 +1,4 @@
+require('ts-node').register();
 require('source-map-support').install();
 
 const fs = require('fs');
@@ -86,11 +87,11 @@ const manifest = cb => {
 		]
 	};
 
-	fs.writeFile('src/ts/generated/changelog.ts', JSON.stringify(json, null, 2), 'utf8', cb);
+	fs.writeFile('src/generated/changelog.ts', JSON.stringify(json, null, 2), 'utf8', cb);
 };
 
 const sprites = () => Promise.resolve() // del(['tools/output/images/*'])
-	.then(() => runAsync('node', ['src/scripts/tools/create-sprites.js']))
+	.then(() => npmScript('ts-node', ['src/tools/create-sprites.ts']))
 	.then(() => gulp.src('tools/output/images/*')
 		.pipe(gulpif(!argv.fast, imagemin()))
 		.pipe(gulp.dest('assets/images')));
@@ -107,7 +108,7 @@ const changelog = cb => {
 	}));
 	const type = `{ version: string; changes: string[]; }[]`;
 	const code = `/* tslint:disable */\n\nexport const CHANGELOG: ${type} = ${JSON.stringify(object, null, 2)};\n`;
-	fs.writeFile('src/ts/generated/changelog.ts', code, 'utf8', cb);
+	fs.writeFile('src/generated/changelog.ts', code, 'utf8', cb);
 };
 
 const icons = cb => {
@@ -115,14 +116,14 @@ const icons = cb => {
 	const root2 = path.join('node_modules', '@fortawesome', 'free-brands-svg-icons');
 
 	const getIconCode = src => JSON.stringify(require(`./${src}`).definition);
-	const iconsTs = readFile('src/ts/client/icons.ts');
+	const iconsTs = readFile('src/client/icons.ts');
 	const matched = _.uniq(iconsTs.match(/\bfa[A-Z]\S*\b/g));
 	const icons = matched.map(m => ({
 		name: m,
 		code: fs.existsSync(path.join(root1, `${m}.js`)) ? getIconCode(path.join(root1, `${m}.js`)) : getIconCode(path.join(root2, `${m}.js`)),
 	})).sort((a, b) => a.name.localeCompare(b.name));
 	const code = `/* tslint:disable */\n\n${icons.map(({ name, code }) => `export const ${name} = ${code};`).join('\n')}`;
-	fs.writeFile('src/ts/generated/fa-icons.ts', lintCode(code), 'utf8', cb);
+	fs.writeFile('src/generated/fa-icons.ts', lintCode(code), 'utf8', cb);
 };
 
 const shaders = cb => {
@@ -131,31 +132,31 @@ const shaders = cb => {
 			.replace(/^\s*\n/gm, '').trim();
 	}
 
-	const dir = path.join('src', 'ts', 'graphics', 'shaders');
+	const dir = path.join('src', 'graphics', 'shaders');
 	const code = '/* tslint:disable */\n\n' + fs.readdirSync(dir)
 		.map(file => [_.camelCase(file.replace(/\.glsl$/, '')), path.join(dir, file)])
 		.map(([name, filePath]) => `export const ${name}Shader = \`${getShaderCode(filePath)}\`;`)
 		.join('\n\n');
-	fs.writeFile('src/ts/generated/shaders.ts', lintCode(code), 'utf8', cb);
+	fs.writeFile('src/generated/shaders.ts', lintCode(code), 'utf8', cb);
 };
 
 const hash = cb => {
 	const code = `export const HASH = '${HASH}';\nexport const STAMP = ${stamp};`;
-	fs.writeFileSync('src/ts/generated/hash.ts', lintCode(code), 'utf8');
-	fs.writeFile('src/ts/generated/hash.json', JSON.stringify({ hash: HASH, stamp }), 'utf8', cb);
+	fs.writeFileSync('src/generated/hash.ts', lintCode(code), 'utf8');
+	fs.writeFile('src/generated/hash.json', JSON.stringify({ hash: HASH, stamp }), 'utf8', cb);
 };
 
 const rollbar = cb => {
 	const { environment, clientToken } = config.rollbar || {};
 	const code = `export const ROLLBAR_ENV = '${environment}';\nexport const ROLLBAR_TOKEN = '${clientToken}';`;
-	fs.writeFile('src/ts/generated/rollbarConfig.ts', lintCode(code), 'utf8', cb);
+	fs.writeFile('src/generated/rollbarConfig.ts', lintCode(code), 'utf8', cb);
 };
 
 const assetsRev = cb => {
 	const json = fs.readFileSync('build/rev-manifest.json', 'utf8');
 	const data = _.mapValues(JSON.parse(json), value => value.replace(/^\S+-([a-f0-9]{10})\.\S+$/, '$1'));
 	const code = `export const REV: { [key: string]: string; } = ${JSON.stringify(data, null, 4)};`;
-	fs.writeFile('src/ts/generated/rev.ts', lintCode(code), 'utf8', cb);
+	fs.writeFile('src/generated/rev.ts', lintCode(code), 'utf8', cb);
 };
 
 const assetsCopy = () => gulp.src('assets/**/*')
@@ -184,19 +185,20 @@ const sassTools = buildSass('tools', 'src/styles/style-tools.scss', 'build/asset
 const sassAdmin = buildSass('admin', 'src/styles/style-admin.scss', 'build/assets-admin');
 const sassTasks = gulp.series(sassMain, sassInline, sassTools, sassAdmin);
 
-const testScripts = ['src/scripts/tests/**/*.js'];
 const ts = npmScript('ts');
 
-const tests = () => gulp.src(testScripts, { read: false })
+const tests = () => gulp.src(['src/tests/**/*.{ts,tsx}'], { read: false })
 	.pipe(mocha({
+		require: 'ts-node/register',
 		exit: true,
 		reporter: 'progress',
 		timeout: 10000,
 	}))
 	.on('error', swallowError);
 
-const coverage = () => gulp.src(testScripts, { read: false })
+const coverage = () => gulp.src(['src/tests/**/*.{ts,tsx}'], { read: false })
 	.pipe(mocha({
+		require: 'ts-node/register',
 		exit: true,
 		reporter: 'progress',
 		timeout: 10000,
@@ -228,7 +230,7 @@ const music = () => gulp.src(path.join(config.assetsPath, 'assets/music/*.wav'),
 
 const serverDev = cb => {
 	if (!argv.noserver) {
-		const serverPath = path.join('src', 'scripts', 'server', 'server.js');
+		const serverPath = path.join('src', 'server', 'server.ts');
 		const options = { env: { NODE_OPTIONS: '--inspect' } };
 		const commonArgs = [serverPath, '--inspect', '--color', '--beta', '--admin'];
 		const server = argv.adm ?
@@ -243,13 +245,7 @@ const serverDev = cb => {
 
 		gulp.watch(['build/**/*.css']).on('change', path => server.notify({ path }));
 		gulp.watch(['build/**/*.js']).on('change', path => server.notify({ path }));
-		gulp.watch([
-			'src/scripts/common/**/*.js',
-			'src/scripts/generated/**/*.js',
-			'src/scripts/graphics/**/*.js',
-			'src/scripts/server/**/*.js',
-			'views/index.pug',
-		], { debounceDelay: 1000 }, restart);
+		gulp.watch(['views/index.pug'], { debounceDelay: 1000 }, restart);
 	}
 
 	cb();
@@ -288,12 +284,12 @@ const covRemap = gulp.series(coverage, remap);
 
 const watch = cb => {
 	gulp.watch(['CHANGELOG.md'], changelog);
-	gulp.watch(['src/ts/client/icons.ts'], icons);
+	gulp.watch(['src/client/icons.ts'], icons);
 	gulp.watch(['src/styles/**/*.scss'], sassTasks);
-	gulp.watch(['src/ts/graphics/shaders/*.glsl'], shaders);
+	gulp.watch(['src/graphics/shaders/*.glsl'], shaders);
 
 	if (argv.coverage || argv.tests) {
-		gulp.watch(['src/scripts/**/*.js'], { debounceDelay: 1000 }, argv.coverage ? covRemap : tests);
+		gulp.watch(['src/**/*.{ts,tsx}'], { debounceDelay: 1000 }, argv.coverage ? covRemap : tests);
 	}
 
 	cb();
@@ -301,8 +297,8 @@ const watch = cb => {
 
 const watchTools = cb => {
 	if (argv.sprites) {
-		// gulp.watch(['src/scripts/tools/**/*.js'], { debounceDelay: 1000 }, sprites);
-		gulp.watch(['src/ts/tools/trigger.txt'], sprites);
+		// gulp.watch(['src/tools/**/*.{ts,tsx}'], { debounceDelay: 1000 }, sprites);
+		gulp.watch(['src/tools/trigger.txt'], sprites);
 		gulp.watch(['assets/**/*'], { debounceDelay: 1000, readDelay: 1000 }, assets);
 		// gulp.watch([path.join(config.assetsPath, 'assets/**/*')], { debounceDelay: 1000, readDelay: 1000 }, sprites);
 	}
@@ -312,7 +308,7 @@ const watchTools = cb => {
 
 const watchTests = cb => {
 	const task = argv.coverage ? covRemap : tests;
-	gulp.watch(['src/scripts/**/*.js', 'src/tests/**/*.txt', 'src/tests/**/*.png'], { debounceDelay: 1000 }, task);
+	gulp.watch(['src/**/*.{ts,tsx}', 'src/tests/**/*.txt', 'src/tests/**/*.png'], { debounceDelay: 1000 }, task);
 	cb();
 };
 
@@ -328,9 +324,8 @@ const warnAboutTscBeingDumb = cb => {
 };
 
 const empty = cb => cb();
-const tsTools = gulp.series(warnAboutTscBeingDumb, npmScript('ts-tools'));
 const spritesTask = argv.sprites ? sprites : empty;
-const buildSprites = gulp.series(tsTools, sprites);
+const buildSprites = gulp.series(sprites);
 
 const build = gulp.series(clean, setProd, common, ts, webpackProd, sw, size);
 const admin = gulp.series(clearnAdmin, setProd, sassAdmin, ts, webpackAdmin);

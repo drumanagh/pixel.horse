@@ -11,9 +11,9 @@ const compilerOptions = {
 module.exports = merge(common, {
 	mode: 'development',
 	entry: {
-		'bootstrap': './ts/bootstrap',
-		'bootstrap-admin': './ts/bootstrap-admin',
-		'bootstrap-tools': './ts/bootstrap-tools',
+		'bootstrap': './bootstrap',
+		'bootstrap-admin': './bootstrap-admin',
+		'bootstrap-tools': './bootstrap-tools',
 	},
 	devtool: 'cheap-eval-source-map',
 	devServer: {
@@ -30,22 +30,6 @@ module.exports = merge(common, {
 	},
 	watchOptions: {
 		ignored: /node_modules/,
-	},
-	module: {
-		rules: [
-			{
-				test: /\.ts$/,
-				use: [
-					{
-						loader: 'ts-loader',
-						options: {
-							compilerOptions,
-						},
-					},
-					'angular2-template-loader',
-				],
-			},
-		],
 	},
 	optimization: {
 		removeAvailableModules: false,

@@ -1,12 +1,9 @@
 {
 	"compilerOptions": {
-		"target": "es2017",
-		"lib": [
-			"dom",
-			"es6"
-		],
-		"module": "commonjs",
-		"moduleResolution": "node",
+		"target": "esnext",
+		"module": "esnext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
 		"importHelpers": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
@@ -18,12 +15,12 @@
 		"strict": true,
 		"strictFunctionTypes": true,
 		"sourceMap": true,
-		"preserveConstEnums": true
+    "jsx": "react"
 	},
-	"exclude": [
-		"build",
-		"tools",
-		"src/scripts",
-		"node_modules"
-	]
+  "include": ["src"],
+	"angularCompilerOptions": {
+		"genDir": "src",
+		"skipMetadataEmit": true,
+		"preserveWhitespaces": true
+	}
 }

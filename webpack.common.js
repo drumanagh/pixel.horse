@@ -9,14 +9,33 @@ module.exports = {
 		publicPath: '/assets/scripts/',
 	},
 	resolve: {
-		extensions: ['.ts', '.js'],
+		extensions: ['.ts', '.tsx', '.js'],
 	},
 	module: {
 		rules: [
 			{
-				test: /\.js$/,
-				use: ['angular2-template-loader'],
-				exclude: [/node_modules/],
+				test: /\.m?js$/,
+				exclude: /node_modules/,
+				use: {
+					loader: 'babel-loader',
+					options: {
+						presets: ['@babel/preset-env']
+					}
+				}
+			},
+			{
+				test: /\.tsx?$/,
+				exclude: /node_modules/,
+				use: [
+					{
+						loader: 'babel-loader',
+						options: {
+							presets: ['@babel/preset-env']
+						}
+					},
+					'ts-loader'
+				]
+
 			},
 			{
 				test: /\.css$/,
@@ -67,7 +86,7 @@ module.exports = {
 	plugins: [
 		new webpack.ContextReplacementPlugin(
 			/\@angular(\\|\/)core(\\|\/)fesm5/,
-			path.resolve(__dirname, 'src', 'ts'),
+			path.resolve(__dirname, 'src'),
 			{}
 		),
 	],

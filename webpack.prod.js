@@ -4,7 +4,6 @@ const merge = require('webpack-merge');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const WrapperPlugin = require('wrapper-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const { AngularCompilerPlugin } = require('@ngtools/webpack');
 const common = require('./webpack.common.js');
 const config = require('./config.json');
 
@@ -17,14 +16,10 @@ const analytics = config.analytics ? `
 	ga('send', 'pageview');
 ` : ``;
 
-const compilerOptions = require('./tsconfig-aot.json').compilerOptions;
-const compilerOptionsES = require('./tsconfig-aot-es.json').compilerOptions;
-
 const scripts = [
-	['bootstrap', 'app/app.module#AppModule', 'assets', compilerOptions, 'tsconfig-aot.json', 5, false],
-	// ['bootstrap-es', 'app/app.module#AppModule', 'assets', compilerOptionsES, 'tsconfig-aot-es.json', 7, false],
-	['bootstrap-admin', 'admin/admin.module#AdminAppModule', 'assets-admin', compilerOptions, 'tsconfig-aot.json', 5, true],
-	['bootstrap-tools', 'tools/tools.module#ToolsAppModule', 'assets', compilerOptions, 'tsconfig-aot.json', 5, true],
+	['bootstrap', 'app/app.module#AppModule', 'assets', false],
+	['bootstrap-admin', 'admin/admin.module#AdminAppModule', 'assets-admin', true],
+	['bootstrap-tools', 'tools/tools.module#ToolsAppModule', 'assets', true],
 ];
 
 function getScripts(args) {
@@ -41,14 +36,14 @@ function getScripts(args) {
 
 module.exports = (args = {}) =>
 	getScripts(args)
-		.map(([script, entry, outDir, compilerOptions, tsConfigPath, ecma, TOOLS]) => merge(common, {
+		.map(([script, entry, outDir, TOOLS]) => merge(common, {
 			mode: 'production',
 			performance: {
 				maxEntrypointSize: 10000000,
 				maxAssetSize: 10000000,
 			},
 			entry: {
-				[script]: `./ts/${script}`,
+				[script]: `./${script}`,
 			},
 			output: Object.assign({}, common.output, {
 				filename: '[name]-[chunkhash:10].js',
@@ -56,31 +51,20 @@ module.exports = (args = {}) =>
 			}),
 			devtool: script === 'bootstrap' ? 'source-map' : false,
 			node: { Buffer: false },
-			module: {
-				rules: [
-					{
-						test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
-						use: [
-							{ loader: '@ngtools/webpack', options: { sourcemap: true, compilerOptions } },
-						],
-					},
-				],
-			},
 			optimization: {
 				minimizer: [
 					new UglifyJSPlugin({
 						sourceMap: true,
 						uglifyOptions: {
-							ecma,
+							ecma: 5,
 							mangle: !args.debug,
 							output: { comments: false },
-							compress: ecma !== 5 ? { inline: 1 } : {},
+							compress: {},
 						},
 					}),
 				],
 			},
 			plugins: [
-				new AngularCompilerPlugin({ tsConfigPath, entryModule: `src/ts/components/${entry}` }),
 				(script === 'bootstrap' && !args.analyze) ? new WrapperPlugin({ test: /\.js$/, header: analytics }) : undefined,
 				args.analyze ? new BundleAnalyzerPlugin({ analyzerMode: 'static' }) : undefined,
 				new webpack.DefinePlugin({ DEVELOPMENT: false, TOOLS, SERVER: false, BETA: !!args.beta, TIMING: !!args.timing, TESTS: false }),
