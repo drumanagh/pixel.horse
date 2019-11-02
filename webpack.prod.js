@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const WrapperPlugin = require('wrapper-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { AngularCompilerPlugin } = require('@ngtools/webpack');
@@ -18,11 +17,9 @@ const analytics = config.analytics ? `
 ` : ``;
 
 const compilerOptions = require('./tsconfig-aot.json').compilerOptions;
-const compilerOptionsES = require('./tsconfig-aot-es.json').compilerOptions;
 
 const scripts = [
 	['bootstrap', 'app/app.module#AppModule', 'assets', compilerOptions, 'tsconfig-aot.json', 5, false],
-	// ['bootstrap-es', 'app/app.module#AppModule', 'assets', compilerOptionsES, 'tsconfig-aot-es.json', 7, false],
 	['bootstrap-admin', 'admin/admin.module#AdminAppModule', 'assets-admin', compilerOptions, 'tsconfig-aot.json', 5, true],
 	['bootstrap-tools', 'tools/tools.module#ToolsAppModule', 'assets', compilerOptions, 'tsconfig-aot.json', 5, true],
 ];
@@ -61,22 +58,10 @@ module.exports = (args = {}) =>
 					{
 						test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
 						use: [
+							'babel-loader',
 							{ loader: '@ngtools/webpack', options: { sourcemap: true, compilerOptions } },
 						],
 					},
-				],
-			},
-			optimization: {
-				minimizer: [
-					new UglifyJSPlugin({
-						sourceMap: true,
-						uglifyOptions: {
-							ecma,
-							mangle: !args.debug,
-							output: { comments: false },
-							compress: ecma !== 5 ? { inline: 1 } : {},
-						},
-					}),
 				],
 			},
 			plugins: [

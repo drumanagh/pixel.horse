@@ -15,7 +15,7 @@ module.exports = {
 		rules: [
 			{
 				test: /\.js$/,
-				use: ['angular2-template-loader'],
+				use: ['babel-loader', 'angular2-template-loader'],
 				exclude: [/node_modules/],
 			},
 			{

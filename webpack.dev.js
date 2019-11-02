@@ -2,12 +2,6 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 
-const compilerOptions = {
-	...require('./tsconfig.json').compilerOptions,
-	target: 'es5',
-	module: 'es2015',
-};
-
 module.exports = merge(common, {
 	mode: 'development',
 	entry: {
@@ -35,15 +29,7 @@ module.exports = merge(common, {
 		rules: [
 			{
 				test: /\.ts$/,
-				use: [
-					{
-						loader: 'ts-loader',
-						options: {
-							compilerOptions,
-						},
-					},
-					'angular2-template-loader',
-				],
+				use: ['babel-loader', 'ts-loader', 'angular2-template-loader'],
 			},
 		],
 	},
