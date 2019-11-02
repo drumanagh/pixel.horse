@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import fs from 'fs';
 import { sample, random } from 'lodash';
 import { pathTo } from '../paths';
 import { World, goToMap } from '../world';

@@ -1,7 +1,7 @@
 /// <reference path="../../typings/my.d.ts" />
 
-import * as fs from 'fs';
-import * as path from 'path';
+import fs from 'fs';
+import path from 'path';
 import { spawn } from 'child_process';
 import { reduce, flatten, map, dropRightWhile } from 'lodash';
 import { Layer, Psd, ExtCanvas, Sprite, Rect, Result, ColorExtra } from './types';

@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment';
 import { Socket, SocketServer, Method, ClientExtensions } from 'ag-sockets';
 import { AccountCounters, Subscription } from '../common/interfaces';
 import { HOUR } from '../common/constants';

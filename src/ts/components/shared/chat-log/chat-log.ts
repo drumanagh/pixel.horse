@@ -13,7 +13,7 @@ import { faCaretUp, faArrowDown, faSearch } from '../../../client/icons';
 import { sampleMessages } from '../../../common/debugData';
 import { findEntityById } from '../../../common/worldMap';
 import { colorToRGBA, rgb2hsl, HSL, hsl2CSS } from '../../../common/color';
-import * as moment from 'moment';
+import moment from 'moment';
 import { isMobile } from '../../../client/data';
 
 interface IndexEntryUser {

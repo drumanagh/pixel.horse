@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment';
 import { escape, escapeRegExp, startsWith, range, uniq, compact } from 'lodash';
 import { fromNow, toInt, hasFlag, compareDates, removeItem, includes } from './utils';
 import { DAY } from './constants';

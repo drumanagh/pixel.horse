@@ -110,21 +110,6 @@ const changelog = cb => {
 	fs.writeFile('src/ts/generated/changelog.ts', code, 'utf8', cb);
 };
 
-const icons = cb => {
-	const root1 = path.join('node_modules', '@fortawesome', 'free-solid-svg-icons');
-	const root2 = path.join('node_modules', '@fortawesome', 'free-brands-svg-icons');
-
-	const getIconCode = src => JSON.stringify(require(`./${src}`).definition);
-	const iconsTs = readFile('src/ts/client/icons.ts');
-	const matched = _.uniq(iconsTs.match(/\bfa[A-Z]\S*\b/g));
-	const icons = matched.map(m => ({
-		name: m,
-		code: fs.existsSync(path.join(root1, `${m}.js`)) ? getIconCode(path.join(root1, `${m}.js`)) : getIconCode(path.join(root2, `${m}.js`)),
-	})).sort((a, b) => a.name.localeCompare(b.name));
-	const code = `/* tslint:disable */\n\n${icons.map(({ name, code }) => `export const ${name} = ${code};`).join('\n')}`;
-	fs.writeFile('src/ts/generated/fa-icons.ts', lintCode(code), 'utf8', cb);
-};
-
 const shaders = cb => {
 	function getShaderCode(filePath) {
 		return fs.readFileSync(filePath, 'utf8')
@@ -283,12 +268,11 @@ const webpackAdmin = npmScript('webpack-admin');
 const sw = npmScript('sw');
 
 const assets = gulp.series(assetsCopy, assetsRev);
-const common = gulp.series(manifest, hash, rollbar, changelog, icons, shaders, assets, sassTasks);
+const common = gulp.series(manifest, hash, rollbar, changelog, shaders, assets, sassTasks);
 const covRemap = gulp.series(coverage, remap);
 
 const watch = cb => {
 	gulp.watch(['CHANGELOG.md'], changelog);
-	gulp.watch(['src/ts/client/icons.ts'], icons);
 	gulp.watch(['src/styles/**/*.scss'], sassTasks);
 	gulp.watch(['src/ts/graphics/shaders/*.glsl'], shaders);
 

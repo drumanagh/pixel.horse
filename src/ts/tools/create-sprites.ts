@@ -4,8 +4,8 @@ require('source-map-support').install();
 
 (global as any).BETA = false;
 
-import * as fs from 'fs';
-import * as path from 'path';
+import fs from 'fs';
+import path from 'path';
 import {
 	max, range, flatten, mapValues, dropRightWhile, isEqual, uniq, times, compact, includes, toPairs,
 } from 'lodash';
@@ -140,7 +140,7 @@ function getEyesFromPsd({ objects2, sprites }: Result, eyesPsd: Psd, irisesPsd: 
 
 	// const mirrored = (get: ByIndexGetter): ByIndexGetter => (canvas, index) => mirrorCanvas(get(canvas, index), -15);
 
-	const palette = [0, WHITE, BLACK]; // 
+	const palette = [0, WHITE, BLACK]; //
 
 	const getEye = (get: ByIndexGetter) => (i: number) => bases.map(base => {
 		const s = addSprite(sprites, get(shadow, i), undefined, palette);

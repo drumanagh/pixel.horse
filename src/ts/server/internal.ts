@@ -1,4 +1,4 @@
-import * as request from 'request-promise';
+import request from 'request-promise';
 import { noop, flatMap, uniq } from 'lodash';
 import {
 	InternalGameServerState, ServerStatus, InternalLoginApi, InternalLoginServerState, InternalApi, HidingStats

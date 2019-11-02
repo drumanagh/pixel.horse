@@ -1,5 +1,5 @@
 import { compareCanvases, loadSprites, loadImageAsCanvas, clearCompareResults } from '../lib';
-import * as path from 'path';
+import path from 'path';
 import { SpriteBatch, MessageType, PaletteSpriteBatch } from '../../common/interfaces';
 import { rect } from '../../common/rect';
 import {

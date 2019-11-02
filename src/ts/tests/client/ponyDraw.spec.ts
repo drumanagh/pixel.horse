@@ -1,6 +1,6 @@
 /* tslint:disable:max-line-length */
 import { compareCanvases, loadSprites, loadImageAsCanvas, clearCompareResults } from '../lib';
-import * as path from 'path';
+import path from 'path';
 import { TRANSPARENT, blushColor, WHITE } from '../../common/colors';
 import { defaultPonyState, defaultDrawPonyOptions } from '../../client/ponyHelpers';
 import { mockPaletteManager, createDefaultPony } from '../../common/ponyInfo';

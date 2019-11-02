@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, OnDestroy, OnChanges, ElementRef, ChangeDetectionStrategy } from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment';
 import { IntervalUpdateService } from '../../services/intervalUpdateService';
 
 @Component({

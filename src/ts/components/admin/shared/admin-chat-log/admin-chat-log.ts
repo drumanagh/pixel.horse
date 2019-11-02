@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, ElementRef } from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment';
 import { AdminModel } from '../../../services/adminModel';
 import { Account } from '../../../../common/adminInterfaces';
 import { ChatDate, createChatDate, createDateRange, replaceSwears } from '../../../../common/adminUtils';

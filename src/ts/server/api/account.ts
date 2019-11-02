@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment';
 import { ACCOUNT_NAME_MAX_LENGTH, ACCOUNT_NAME_MIN_LENGTH, MIN_CHATLOG_RANGE, MAX_CHATLOG_RANGE, HIDES_PER_PAGE } from '../../common/constants';
 import {
 	UpdateAccountData, AccountSettings, AccountData, ModAction, EntitiesEditorInfo, EntityNameTypes

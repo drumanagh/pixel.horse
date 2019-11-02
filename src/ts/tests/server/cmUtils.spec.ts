@@ -1,5 +1,5 @@
 import '../lib';
-import * as fs from 'fs';
+import fs from 'fs';
 import { expect } from 'chai';
 import { isBadCM, theSameColor, hexToLab } from '../../server/cmUtils';
 import { clearCompareResults } from '../lib';
