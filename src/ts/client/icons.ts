@@ -254,7 +254,7 @@ export {
 	faVolumeOff,
 	faVolumeUp,
 	faWrench,
-}
+};
 
 export const partyLeaderIcon = faCrown;
 export const offlineIcon = faPlug;
