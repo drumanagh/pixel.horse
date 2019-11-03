@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import fs from 'fs';
 import { pathTo } from '../paths';
 import { ServerMap, MapUsage, ServerEntity } from '../serverInterfaces';
 import { World, goToMap } from '../world';

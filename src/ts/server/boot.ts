@@ -4,8 +4,8 @@ require('source-map-support').install();
 
 import 'core-js/stable/promise/finally';
 import 'reflect-metadata';
-import * as Promise from 'bluebird';
-import * as fs from 'fs';
+import Promise from 'bluebird';
+import fs from 'fs';
 import { argv } from 'yargs';
 
 (global as any).DEVELOPMENT = process.env.NODE_ENV !== 'production';

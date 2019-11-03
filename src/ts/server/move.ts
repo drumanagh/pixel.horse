@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment';
 import chalk from 'chalk';
 import { IClient } from './serverInterfaces';
 import { decodeMovement, dirToVector, flagsToSpeed, isMovingRight } from '../common/movementUtils';

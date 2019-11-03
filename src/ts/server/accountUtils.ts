@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment';
 import { Types } from 'mongoose';
 import { uniq, truncate } from 'lodash';
 import { AccountState, AccountFlags, AuthBase } from '../common/adminInterfaces';

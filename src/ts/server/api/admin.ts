@@ -1,5 +1,5 @@
-import * as fs from 'fs';
-import * as moment from 'moment';
+import fs from 'fs';
+import moment from 'moment';
 import {
 	AdminState, eventFields, BaseValues, UpdateOrigin, UserCountStats, AccountDetails, SupporterInvite,
 	InternalGameServerState, InternalLoginServerState, OtherStats, Settings, GameServerSettings

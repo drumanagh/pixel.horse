@@ -19,6 +19,10 @@ module.exports = {
 				exclude: [/node_modules/],
 			},
 			{
+				test: /\.glsl$/,
+				use: ['raw-loader'],
+			},
+			{
 				test: /\.css$/,
 				use: ['raw-loader'],
 			},

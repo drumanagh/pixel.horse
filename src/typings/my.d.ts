@@ -2,3 +2,8 @@
 /// <reference path="my/canvas.d.ts" />
 /// <reference path="my/node-async.d.ts" />
 /// <reference path="my/webgl-debug.d.ts" />
+
+declare module '*.glsl' {
+	const content: string;
+	export default content;
+}

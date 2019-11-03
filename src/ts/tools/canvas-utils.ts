@@ -1,7 +1,7 @@
 /// <reference path="../../typings/my.d.ts" />
 
-import * as fs from 'fs';
-import * as path from 'path';
+import fs from 'fs';
+import path from 'path';
 import { createCanvas, Image } from 'canvas';
 import { ExtCanvas, Point } from './types';
 

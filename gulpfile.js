@@ -125,20 +125,6 @@ const icons = cb => {
 	fs.writeFile('src/ts/generated/fa-icons.ts', lintCode(code), 'utf8', cb);
 };
 
-const shaders = cb => {
-	function getShaderCode(filePath) {
-		return fs.readFileSync(filePath, 'utf8')
-			.replace(/^\s*\n/gm, '').trim();
-	}
-
-	const dir = path.join('src', 'ts', 'graphics', 'shaders');
-	const code = '/* tslint:disable */\n\n' + fs.readdirSync(dir)
-		.map(file => [_.camelCase(file.replace(/\.glsl$/, '')), path.join(dir, file)])
-		.map(([name, filePath]) => `export const ${name}Shader = \`${getShaderCode(filePath)}\`;`)
-		.join('\n\n');
-	fs.writeFile('src/ts/generated/shaders.ts', lintCode(code), 'utf8', cb);
-};
-
 const hash = cb => {
 	const code = `export const HASH = '${HASH}';\nexport const STAMP = ${stamp};`;
 	fs.writeFileSync('src/ts/generated/hash.ts', lintCode(code), 'utf8');
@@ -283,14 +269,13 @@ const webpackAdmin = npmScript('webpack-admin');
 const sw = npmScript('sw');
 
 const assets = gulp.series(assetsCopy, assetsRev);
-const common = gulp.series(manifest, hash, rollbar, changelog, icons, shaders, assets, sassTasks);
+const common = gulp.series(manifest, hash, rollbar, changelog, icons, assets, sassTasks);
 const covRemap = gulp.series(coverage, remap);
 
 const watch = cb => {
 	gulp.watch(['CHANGELOG.md'], changelog);
 	gulp.watch(['src/ts/client/icons.ts'], icons);
 	gulp.watch(['src/styles/**/*.scss'], sassTasks);
-	gulp.watch(['src/ts/graphics/shaders/*.glsl'], shaders);
 
 	if (argv.coverage || argv.tests) {
 		gulp.watch(['src/scripts/**/*.js'], { debounceDelay: 1000 }, argv.coverage ? covRemap : tests);

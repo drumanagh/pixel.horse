@@ -23,7 +23,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 // import { createShader } from '../../../graphics/webgl/shader-new';
 // import {
 // 	lightShader, spriteShader, sprite2Shader, paletteDepthShader, paletteLayersShader, paletteLayersInstancedShader
-// } from '../../../generated/shaders';
+// } from '../../../graphics/shaders';
 
 @Component({
 	selector: 'tools-webgl',

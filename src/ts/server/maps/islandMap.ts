@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import fs from 'fs';
 import { sample } from 'lodash';
 import * as entities from '../../common/entities';
 import { pathTo } from '../paths';

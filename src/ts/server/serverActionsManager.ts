@@ -1,5 +1,5 @@
 import { SocketClient, ClientExtensions } from 'ag-sockets';
-import * as fs from 'fs';
+import fs from 'fs';
 import { noop, random } from 'lodash';
 import { HOUR, SECOND, SEASON, HOLIDAY, UNHIDE_TIMEOUT, MINUTE } from '../common/constants';
 import { CharacterState, ServerConfig, Settings } from '../common/adminInterfaces';

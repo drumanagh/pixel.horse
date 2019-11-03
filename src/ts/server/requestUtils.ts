@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
-import * as fs from 'fs';
-import * as path from 'path';
-import * as moment from 'moment';
-import * as ExpressBrute from 'express-brute';
+import fs from 'fs';
+import path from 'path';
+import moment from 'moment';
+import ExpressBrute from 'express-brute';
 import { noop } from 'lodash';
 import { HASH } from '../generated/hash';
 import { isAdmin } from '../common/accountUtils';

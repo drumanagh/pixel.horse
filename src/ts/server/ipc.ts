@@ -1,4 +1,4 @@
-import * as ipc from 'node-ipc';
+import ipc from 'node-ipc';
 
 export interface LoginServer {
 	hello(message: string): Promise<void>;

@@ -1,4 +1,4 @@
-import * as path from 'path';
+import path from 'path';
 
 export const root = path.join(__dirname, '..', '..', '..');
 export const store = path.join(root, 'store');

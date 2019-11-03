@@ -1,10 +1,10 @@
 /// <reference path="../../typings/my.d.ts" />
 
 import '../server/boot';
-import * as mongoose from 'mongoose';
-import * as fs from 'fs';
-import * as path from 'path';
-import * as del from 'del';
+import mongoose from 'mongoose';
+import fs from 'fs';
+import path from 'path';
+import del from 'del';
 import { once, mapValues } from 'lodash';
 import { spawnSync } from 'child_process';
 import { createStubInstance, SinonStubbedInstance, stub } from 'sinon';

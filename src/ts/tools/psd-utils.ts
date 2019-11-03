@@ -1,5 +1,5 @@
-import * as fs from 'fs';
-import * as path from 'path';
+import fs from 'fs';
+import path from 'path';
 import { Layer as PsdLayer, Psd as PsdFile, readPsd, initializeCanvas } from 'ag-psd';
 import { Layer, Psd } from './types';
 import { createExtCanvas } from './canvas-utils';

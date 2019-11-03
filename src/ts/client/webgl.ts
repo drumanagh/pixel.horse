@@ -1,4 +1,4 @@
-import { mergeShader, spriteShader, paletteLayersShader, lightShader } from '../generated/shaders';
+import { mergeShader, spriteShader, paletteLayersShader, lightShader } from '../graphics/shaders';
 import { FrameBuffer, disposeFrameBuffer, createFrameBuffer } from '../graphics/webgl/frameBuffer';
 import { CommonPalettes, PaletteManager, Camera } from '../common/interfaces';
 import { Shader, ShaderProgramData, disposeShaderProgramData } from '../graphics/webgl/shader';

@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import fs from 'fs';
 import * as entities from '../../common/entities';
 import { rect } from '../../common/rect';
 import { TileType, MapType } from '../../common/interfaces';
