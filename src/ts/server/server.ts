@@ -16,12 +16,12 @@ import { WebSocketServer } from 'clusterws-uws';
 import { compact, once } from 'lodash';
 import { copySync, removeSync, ensureDirSync } from 'fs-extra';
 import { createServerHost, createClientOptions, ServerOptions, ClientExtensions, Packet } from 'ag-sockets';
+import { gitDescribeSync } from 'git-describe';
 import { config, port, server, args, version } from './config';
 import { YEAR, WEEK } from '../common/constants';
 import { rollbarCheckIgnore } from '../common/rollbar';
 import { isBanned } from '../common/adminUtils';
 import { includes } from '../common/utils';
-import { STAMP } from '../generated/hash';
 import { ClientActions } from '../client/clientActions';
 import { ClientAdminActions } from '../client/clientAdminActions';
 import { ServerActions } from './serverActions';
@@ -59,6 +59,8 @@ import { InternalAdminApi } from './api/internal-admin';
 import { AdminService } from './services/adminService';
 import { createEndPoints } from './api/admin';
 import { World } from './world';
+
+const GIT_DISTANCE = gitDescribeSync(__dirname, { customArguments: ['--abbrev=40'] }).distance;
 
 function getServiceWorker() {
 	try {
@@ -207,7 +209,7 @@ const sessionMiddlewares = once(() => [createSession(), passport.initialize(), p
 const adminMiddlewares = once(() => [...sessionMiddlewares(), isAdmin(server)]);
 const socketOptionsBase: ServerOptions = {
 	ws: { Server: WebSocketServer },
-	hash: STAMP,
+	hash: GIT_DISTANCE,
 };
 
 initLogRequest(stats.logRequest);

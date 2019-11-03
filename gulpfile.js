@@ -20,9 +20,6 @@ const remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 const spawn = require('child_process').spawn;
 const argv = require('yargs').argv;
 const config = require('./config.json');
-const stamp = Math.floor(Math.random() * 0xffffffff);
-const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-';
-const HASH = _.range(0, 10).map(() => chars[Math.floor(Math.random() * chars.length)]).join('');
 
 let development = true;
 
@@ -137,12 +134,6 @@ const shaders = cb => {
 		.map(([name, filePath]) => `export const ${name}Shader = \`${getShaderCode(filePath)}\`;`)
 		.join('\n\n');
 	fs.writeFile('src/ts/generated/shaders.ts', lintCode(code), 'utf8', cb);
-};
-
-const hash = cb => {
-	const code = `export const HASH = '${HASH}';\nexport const STAMP = ${stamp};`;
-	fs.writeFileSync('src/ts/generated/hash.ts', lintCode(code), 'utf8');
-	fs.writeFile('src/ts/generated/hash.json', JSON.stringify({ hash: HASH, stamp }), 'utf8', cb);
 };
 
 const rollbar = cb => {
@@ -283,7 +274,7 @@ const webpackAdmin = npmScript('webpack-admin');
 const sw = npmScript('sw');
 
 const assets = gulp.series(assetsCopy, assetsRev);
-const common = gulp.series(manifest, hash, rollbar, changelog, icons, shaders, assets, sassTasks);
+const common = gulp.series(manifest, rollbar, changelog, icons, shaders, assets, sassTasks);
 const covRemap = gulp.series(coverage, remap);
 
 const watch = cb => {

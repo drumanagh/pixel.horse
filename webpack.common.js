@@ -1,3 +1,4 @@
+const { gitDescribeSync } = require('git-describe');
 const webpack = require('webpack');
 const path = require('path');
 
@@ -65,6 +66,9 @@ module.exports = {
 		],
 	},
 	plugins: [
+		new webpack.DefinePlugin({
+			GIT_HASH: JSON.stringify(gitDescribeSync(__dirname, { customArguments: ['--abbrev=40'] }).hash)
+		}),
 		new webpack.ContextReplacementPlugin(
 			/\@angular(\\|\/)core(\\|\/)fesm5/,
 			path.resolve(__dirname, 'src', 'ts'),

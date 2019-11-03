@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { merge } from 'lodash';
 import { Subject } from 'rxjs';
-import { HASH } from '../../generated/hash';
+
 import {
 	AccountData, UpdateAccountData, AccountSettings, GameStatus, SocialSiteInfo, PonyObject, JoinResponse,
 	OAuthProvider, EntitiesEditorInfo, FriendData, PalettePonyInfo, HiddenPlayer
@@ -485,7 +485,7 @@ export class Model {
 
 		const params = new HttpParams()
 			.set('t', (Date.now() % 0x10000).toString(16));
-		const headers = new HttpHeaders({ 'api-version': HASH, 'api-bid': this.storage.getItem('bid') || '-' });
+		const headers = new HttpHeaders({ 'api-version': process.env.GIT_HASH!, 'api-bid': this.storage.getItem('bid') || '-' });
 
 		return observableToPromise(this.http.post<T>(url, data, { params, headers }));
 	}

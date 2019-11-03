@@ -1,7 +1,6 @@
 import { ErrorHandler, Injectable, Injector, InjectionToken } from '@angular/core';
 import * as Rollbar from 'rollbar';
 import { version } from '../../client/data';
-import { HASH } from '../../generated/hash';
 import { ROLLBAR_ENV, ROLLBAR_TOKEN } from '../../generated/rollbarConfig';
 import { rollbarCheckIgnore, isIgnoredError } from '../../common/rollbar';
 
@@ -23,7 +22,7 @@ const rollbarConfig = {
 			javascript: {
 				source_map_enabled: true,
 				guess_uncaught_frames: true,
-				code_version: HASH,
+				code_version: process.env.GIT_HASH,
 			},
 		},
 	},

@@ -3,8 +3,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as moment from 'moment';
 import * as ExpressBrute from 'express-brute';
+import { gitDescribeSync } from 'git-describe';
 import { noop } from 'lodash';
-import { HASH } from '../generated/hash';
 import { isAdmin } from '../common/accountUtils';
 import { ACCOUNT_ERROR, VERSION_ERROR, OFFLINE_ERROR } from '../common/errors';
 import { logger } from './logger';
@@ -15,6 +15,7 @@ import { Settings, ServerConfig } from '../common/adminInterfaces';
 import { getIP } from './originUtils';
 import { IAccount } from './db';
 
+const GIT_HASH = gitDescribeSync(__dirname, { customArguments: ['--abbrev=40'] }).hash;
 const ROLLBAR_IP = '35.184.69.251';
 
 export const notFound: RequestHandler = (_, res) => {
@@ -49,7 +50,7 @@ export const blockMaps = (debug: boolean, local: boolean): RequestHandler => (re
 export const hash: RequestHandler = (req, res, next) => {
 	const apiVersion = req.get('api-version');
 
-	if (apiVersion !== HASH) {
+	if (apiVersion !== GIT_HASH) {
 		res.status(400).json({ error: VERSION_ERROR });
 	} else {
 		next(null);
