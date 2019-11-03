@@ -145,12 +145,6 @@ const hash = cb => {
 	fs.writeFile('src/ts/generated/hash.json', JSON.stringify({ hash: HASH, stamp }), 'utf8', cb);
 };
 
-const rollbar = cb => {
-	const { environment, clientToken } = config.rollbar || {};
-	const code = `export const ROLLBAR_ENV = '${environment}';\nexport const ROLLBAR_TOKEN = '${clientToken}';`;
-	fs.writeFile('src/ts/generated/rollbarConfig.ts', lintCode(code), 'utf8', cb);
-};
-
 const assetsRev = cb => {
 	const json = fs.readFileSync('build/rev-manifest.json', 'utf8');
 	const data = _.mapValues(JSON.parse(json), value => value.replace(/^\S+-([a-f0-9]{10})\.\S+$/, '$1'));
@@ -283,7 +277,7 @@ const webpackAdmin = npmScript('webpack-admin');
 const sw = npmScript('sw');
 
 const assets = gulp.series(assetsCopy, assetsRev);
-const common = gulp.series(manifest, hash, rollbar, changelog, icons, shaders, assets, sassTasks);
+const common = gulp.series(manifest, hash, changelog, icons, shaders, assets, sassTasks);
 const covRemap = gulp.series(coverage, remap);
 
 const watch = cb => {

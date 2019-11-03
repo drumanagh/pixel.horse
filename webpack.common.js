@@ -1,6 +1,8 @@
 const webpack = require('webpack');
 const path = require('path');
 
+const configJson = require('./config.json');
+
 module.exports = {
 	context: path.join(__dirname, 'src'),
 	output: {
@@ -65,6 +67,10 @@ module.exports = {
 		],
 	},
 	plugins: [
+		new webpack.DefinePlugin({
+			'process.env.ROLLBAR_ENVIRONMENT': JSON.stringify((configJson.rollbar || {}).environment),
+			'process.env.ROLLBAR_CLIENT_TOKEN': JSON.stringify((configJson.rollbar || {}).clientToken),
+		}),
 		new webpack.ContextReplacementPlugin(
 			/\@angular(\\|\/)core(\\|\/)fesm5/,
 			path.resolve(__dirname, 'src', 'ts'),

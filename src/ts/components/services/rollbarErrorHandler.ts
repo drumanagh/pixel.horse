@@ -2,14 +2,13 @@ import { ErrorHandler, Injectable, Injector, InjectionToken } from '@angular/cor
 import * as Rollbar from 'rollbar';
 import { version } from '../../client/data';
 import { HASH } from '../../generated/hash';
-import { ROLLBAR_ENV, ROLLBAR_TOKEN } from '../../generated/rollbarConfig';
 import { rollbarCheckIgnore, isIgnoredError } from '../../common/rollbar';
 
 const host = typeof location === 'undefined' ? '' : location.host;
 
 const rollbarConfig = {
-	environment: ROLLBAR_ENV,
-	accessToken: ROLLBAR_TOKEN,
+	environment: process.env.ROLLBAR_ENVIRONMENT,
+	accessToken: process.env.ROLLBAR_CLIENT_TOKEN,
 	ignoredMessages: ['disconnected'],
 	hostWhiteList: [host],
 	captureUncaught: true,
@@ -17,7 +16,7 @@ const rollbarConfig = {
 	// checkIgnore,
 	enabled: true,
 	payload: {
-		environment: ROLLBAR_ENV,
+		environment: process.env.ROLLBAR_ENVIRONMENT,
 		version: version, // NOTE: workaround for compilation issue
 		client: {
 			javascript: {
